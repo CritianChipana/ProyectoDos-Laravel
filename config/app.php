@@ -176,9 +176,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Modules\Reports\Providers\ServiceOrchestration::class,
         App\Modules\Authentication\Providers\ServiceOrchestration::class,
-        App\Modules\Contacts\Providers\ServiceOrchestration::class,
+        // App\Modules\Contacts\Providers\ServiceOrchestration::class,
         App\Modules\Knows\Providers\ServiceOrchestration::class,
-        App\Modules\Informations\Providers\ServiceOrchestration::class,
+        // App\Modules\Informations\Providers\ServiceOrchestration::class,
         App\Modules\Strategies\Providers\ServiceOrchestration::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         

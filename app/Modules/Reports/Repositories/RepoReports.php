@@ -32,12 +32,18 @@ class RepoReports implements IReports {
     public function crearReport($data){
 
         $report = new Report();
-        $report->reportTitle=$data->reportTitle;
-        $report->reportDescription=$data->reportDescription;
-        $report->reportId=$data->reportId;
-        $report->groupId=$data->groupId;
-        $report->isActive=$data->isActive;
-        $report->sectionId=$data->sectionId;
+        $report->billing=$data->billing;
+        $report->presale=$data->presale;
+        $report->rawMaterial=$data->rawMaterial;
+        $report->humanResources=$data->humanResources;
+        $report->oee=$data->oee;
+        $report->firecCost=$data->firecCost;
+        $report->adminWorkSheet=$data->adminWorkSheet;
+        $report->maintenance=$data->maintenance;
+        $report->ouBoundLogistics=$data->ouBoundLogistics;
+        $report->marketing=$data->marketing;
+        $report->rentals=$data->rentals;
+        $report->services=$data->services;
         $report->userId=$data->userId;
         $report->state=true;
         $report->save();
@@ -59,12 +65,18 @@ class RepoReports implements IReports {
     public function updateReport($id,$data){
 
         $report = Report::find($id);
-        $report->reportTitle=$data->reportTitle;
-        $report->reportDescription=$data->reportDescription;
-        $report->reportId=$data->reportId;
-        $report->groupId=$data->groupId;
-        $report->isActive=$data->isActive;
-        $report->sectionId=$data->sectionId;
+        $report->billing=$data->billing;
+        $report->presale=$data->presale;
+        $report->rawMaterial=$data->rawMaterial;
+        $report->humanResources=$data->humanResources;
+        $report->oee=$data->oee;
+        $report->firecCost=$data->firecCost;
+        $report->adminWorkSheet=$data->adminWorkSheet;
+        $report->maintenance=$data->maintenance;
+        $report->ouBoundLogistics=$data->ouBoundLogistics;
+        $report->marketing=$data->marketing;
+        $report->rentals=$data->rentals;
+        $report->services=$data->services;
         $report->userId=$data->userId;
         $report->state=$data->state;
         $report->save();

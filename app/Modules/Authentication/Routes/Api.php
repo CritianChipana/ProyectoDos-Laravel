@@ -11,9 +11,10 @@ Route::post("/register",[AuthenticationController::class, "registerUser"]);
 Route::post('/login', [AuthenticationController::class,"login"]);
 Route::get('/refresh', [AuthenticationController::class,"refresh"]);
 Route::get('/user',[AuthenticationController::class,"authenticatedUser"]);
+Route::delete('/deleteUser/{id}', [AuthenticationController::class,"deleteUser"]);
+Route::put('/updateUser/{id}', [AuthenticationController::class,"updateUser"]);
+Route::get('/users',[AuthenticationController::class,"users"]);
 
-// Route::group(['middleware' => ['jwt.verify']], function() {
-// });
 
 
 ?>

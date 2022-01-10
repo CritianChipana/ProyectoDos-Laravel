@@ -8,6 +8,9 @@
         public function registerUser($data);
         public function login($data);
         public function refresh($data);
+        public function deleteUser($id);
+        public function updateUser($id,$data);
+        public function users();
 
     }
 

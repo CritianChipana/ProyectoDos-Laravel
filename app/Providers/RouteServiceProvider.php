@@ -45,17 +45,17 @@ class RouteServiceProvider extends ServiceProvider
         ->namespace($this->namespace)
         ->group(base_path('app/Modules/Authentication/Routes/api.php'));
 
-        Route::prefix('web-api')
-        ->namespace($this->namespace)
-        ->group(base_path('app/Modules/Contacts/Routes/api.php'));
+        // Route::prefix('web-api')
+        // ->namespace($this->namespace)
+        // ->group(base_path('app/Modules/Contacts/Routes/api.php'));
 
         Route::prefix('web-api')
         ->namespace($this->namespace)
         ->group(base_path('app/Modules/Knows/Routes/api.php'));
 
-        Route::prefix('web-api')
-        ->namespace($this->namespace)
-        ->group(base_path('app/Modules/Informations/Routes/api.php'));
+        // Route::prefix('web-api')
+        // ->namespace($this->namespace)
+        // ->group(base_path('app/Modules/Informations/Routes/api.php'));
 
         Route::prefix('web-api')
         ->namespace($this->namespace)
