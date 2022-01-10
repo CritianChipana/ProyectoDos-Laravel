@@ -21,6 +21,12 @@
         </style>
     </head>
     <body class="antialiased">
+        <h1>hola</h1>
+        {{-- http://localhost/proyecto-dos/public/storage/CF0wA8hnm8LPnSBi1YmAJd20L04mjCLxqY0cNyXK.jpg --}}
+        {{-- <img src="/storage/J0JhOFwACou7JU3wQdya2cIJcS1NEidOB0J7gkLY.jpg" alt="asd"> --}}
+        {{-- <img src="{{asset("/storage/J0JhOFwACou7JU3wQdya2cIJcS1NEidOB0J7gkLY.jpg")}}" alt="asd"> --}}
+
+        
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
