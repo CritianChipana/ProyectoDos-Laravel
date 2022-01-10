@@ -15,13 +15,15 @@ class RepoReports implements IReports {
     }
 
     public function getReports(){
-        $results = $this->model::table('reports')->get();
+        $results = $this->model::table('reports')
+        ->where('state',true)
+        ->get();
         return $results;
     }
 
     public function getReportById($id){
         $results = $this->model::table('reports')
-            ->select('id','nombre')
+            // ->select('id','nombre')
             ->where('id',$id)
             ->first();
         return $results;
@@ -30,7 +32,14 @@ class RepoReports implements IReports {
     public function crearReport($data){
 
         $report = new Report();
-        $report->nombre=$data->nombre;
+        $report->reportTitle=$data->reportTitle;
+        $report->reportDescription=$data->reportDescription;
+        $report->reportId=$data->reportId;
+        $report->groupId=$data->groupId;
+        $report->isActive=$data->isActive;
+        $report->sectionId=$data->sectionId;
+        $report->userId=$data->userId;
+        $report->state=true;
         $report->save();
 
         return $report;
@@ -40,7 +49,9 @@ class RepoReports implements IReports {
     public function deleteReport($id){
 
         $report = Report::find($id);
-        $report->delete();
+        $report->state=false;
+        // $report->delete();
+        $report->save();
         return $report;
 
     }
@@ -48,7 +59,14 @@ class RepoReports implements IReports {
     public function updateReport($id,$data){
 
         $report = Report::find($id);
-        $report->nombre=$data->nombre;
+        $report->reportTitle=$data->reportTitle;
+        $report->reportDescription=$data->reportDescription;
+        $report->reportId=$data->reportId;
+        $report->groupId=$data->groupId;
+        $report->isActive=$data->isActive;
+        $report->sectionId=$data->sectionId;
+        $report->userId=$data->userId;
+        $report->state=$data->state;
         $report->save();
         return $report;
 

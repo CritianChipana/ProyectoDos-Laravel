@@ -38,9 +38,22 @@ class RepoAuthentication implements IAuthentication {
 
     public function registerUser($data){
         $validator = Validator::make($data->all(), [
-            'name' => 'required',
-            'email' => 'required|string|email|max:100|unique:users',
+            // 'name' => 'required',
+            // 'email' => 'required|string|email|max:100|unique:users',
+            // 'password' => 'required|string|min:6',
+            'firstName' => 'required',
+            'lastName' => 'required',
             'password' => 'required|string|min:6',
+            'email' => 'required|string|email|max:100|unique:users',
+            'workSpace' => '',
+            'mobileNo' => '',
+            'companyName' => '',
+            'indutryName' => '',
+            'position' => '',
+            'isActive' => 'required|boolean',
+            'isAdmi' => 'required|boolean',
+            'isMasterAdmi' => 'required|boolean',
+            'state' => 'required|boolean',
         ]);
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(),400);

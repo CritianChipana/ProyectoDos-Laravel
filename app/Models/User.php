@@ -20,9 +20,22 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        // 'name',
+        // 'email',
+        // 'password',
+        'firstName',
+        'lastName',
         'password',
+        'email',
+        'workSpace',
+        'mobileNo',
+        'companyName',
+        'indutryName',
+        'position',
+        'isActive',
+        'isAdmi',
+        'isMasterAdmi',
+        'state',
     ];
 
     /**
@@ -32,7 +45,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        // 'remember_token',
     ];
 
     /**
@@ -40,9 +53,9 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // protected $casts = [
+    //     'email_verified_at' => 'datetime',
+    // ];
 
     public function getJWTIdentifier()
     {
@@ -52,5 +65,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
     	return [];
+    }
+
+      //relacion de uno a muchos
+    public function reports(){
+        return $this->hasMany('App\Models\Report');
     }
 }

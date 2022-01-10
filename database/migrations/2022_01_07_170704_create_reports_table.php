@@ -14,8 +14,19 @@ class CreateReportsTable extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
+            // $table->id();
+            // $table->string("nombre");
+            // $table->timestamps();
             $table->id();
-            $table->string("nombre");
+            $table->string("reportTitle");
+            $table->text("reportDescription");
+            $table->text("reportId");
+            $table->text("groupId");
+            $table->boolean("isActive");
+            $table->string("sectionId");
+            $table->unsignedBigInteger('userId')->nullable();
+            $table->foreign('userId')->references('id')->on('users')->onDelete('set null');
+            $table->boolean("state");
             $table->timestamps();
         });
     }

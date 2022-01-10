@@ -11,6 +11,16 @@ class Report extends Model
     protected $table = "reports";
     protected $primaryKey = "id";
     protected $fillable = [
-        'nombre'
+        'reportTitle',
+        'reportDescription',
+        'reportId',
+        'groupId',
+        'isActive',
+        'sectionId',
+        'userId',
+        'state'
     ];
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
 }
