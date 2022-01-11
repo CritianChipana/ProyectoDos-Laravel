@@ -150,7 +150,7 @@ class RepoAuthentication implements IAuthentication {
    
 
 
-    public function updateUser($userId,$data){
+    public function updateUser($id,$data){
         $messages = [
             'firstName.required' => 'El nombre es obligatorio',
             'lastName.required' => 'El apellido es obligatorio',
@@ -180,7 +180,7 @@ class RepoAuthentication implements IAuthentication {
         // }
 
         $validator = Validator::make($data->all(), [
-            'userId' => 'required',
+            'id' => 'required',
             'firstName' => 'required',
             'lastName' => 'required',
             'email' => 'required',
@@ -206,7 +206,7 @@ class RepoAuthentication implements IAuthentication {
         // try{
 
             
-        //     $result = User::where('id',$userId)
+        //     $result = User::where('id',$id)
         //     ->update([
         //         'firstName'=> $data->firstName,
         //         'lastName'=> $data->lastName,
@@ -236,7 +236,7 @@ class RepoAuthentication implements IAuthentication {
         //     }
 
         // }catch(Exception $ex){
-        //     Log::error('Error API delete User', ['params' => $userId, 'stackTrace' => $ex]);
+        //     Log::error('Error API delete User', ['params' => $id, 'stackTrace' => $ex]);
 		// 	return response()->json(
 		// 		[
 		// 			'success' => false, 
@@ -246,7 +246,7 @@ class RepoAuthentication implements IAuthentication {
 //? *******************************************
 try{
     
-    $result = User::find($userId);
+    $result = User::find($id);
    
 
             $result->firstName=$data->firstName;
@@ -300,7 +300,7 @@ try{
             // ], 201);
 
         }catch(Exception $ex){
-            Log::error('Error API update User', ['params' => $userId, 'stackTrace' => $ex]);
+            Log::error('Error API update User', ['params' => $id, 'stackTrace' => $ex]);
 			return response()->json(
 				[
 					'success' => false, 
