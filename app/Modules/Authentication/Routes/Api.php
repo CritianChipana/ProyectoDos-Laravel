@@ -8,6 +8,7 @@ use App\Modules\Authentication\Controllers\AuthenticationController;
 use Illuminate\Support\Facades\Route;
  
 Route::post("/register",[AuthenticationController::class, "registerUser"]);
+Route::get("/me",[AuthenticationController::class, "me"]);
 Route::post('/login', [AuthenticationController::class,"login"]);
 Route::get('/refresh', [AuthenticationController::class,"refresh"]);
 Route::get('/user',[AuthenticationController::class,"authenticatedUser"]);

@@ -22,8 +22,18 @@ class AuthenticationController extends Controller{
     public function login(Request $request)
     {
         $result = $this->IAuthentication->login($request);
+        
         return $result;
     }
+
+    public function me ()
+	{
+		return response()->json(
+			[
+				'success' => true
+			], 200
+		);
+	}
 
     public function authenticatedUser()
     {

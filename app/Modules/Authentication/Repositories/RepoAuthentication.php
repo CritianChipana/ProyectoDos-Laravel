@@ -37,12 +37,23 @@ class RepoAuthentication implements IAuthentication {
         return response()->json(auth()->user());
     }
 
+    public function me ()
+	{
+		return response()->json(
+			[
+				'success' => true, 
+				'expires_in' => auth()->factory()->getTTL() * 60,
+				'data' => auth()->user()
+			], 200
+		);
+	}
+
     public function registerUser($data){
         $validator = Validator::make($data->all(), [
             
             'firstName' => 'required',
             'lastName' => 'required',
-            'password' => 'required|string|min:6',
+            'password' => 'string|min:6',
             'email' => 'required|string|email|max:100|unique:users',
             'workSpace' => '',
             'mobileNo' => '',
@@ -73,15 +84,20 @@ class RepoAuthentication implements IAuthentication {
         ], 201);
     }
     
-    
     public function login($data){
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
         }
 
-        return $this->respondWithToken($token);
+        return response()->json([
+            'success' => true, 
+            'data' => $this->respondWithToken($token)
+        ]);
     }
 
     protected function respondWithToken($token)
@@ -148,7 +164,7 @@ class RepoAuthentication implements IAuthentication {
         //     $validator->validate(),
         //     ['password' => bcrypt($data->password)]
         // ));
-// helper de laravel para password.
+        // helper de laravel para password.
         $user = User::find($id);
         $user->firstName=$data->firstName;
         $user->lastName=$data->lastName;
@@ -170,11 +186,16 @@ class RepoAuthentication implements IAuthentication {
             'user' => $user
         ], 201);
     }
+
     public function users(){
         $results = $this->model::table('users')
         ->where('state',true)
         ->get();
-        return $results;
+    
+        return [
+            'success' => true,
+            'data' => $results
+        ];
     }
 
 }
