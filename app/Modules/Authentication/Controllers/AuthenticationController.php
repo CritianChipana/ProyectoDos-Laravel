@@ -75,6 +75,7 @@ class AuthenticationController extends Controller{
     }
 
     public function deleteUser(Request $request){
+        
         $userId = $request->userId;
         $result = $this->IAuthentication->deleteUser($userId);
         return $result;

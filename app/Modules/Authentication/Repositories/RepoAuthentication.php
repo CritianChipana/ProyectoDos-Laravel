@@ -128,7 +128,7 @@ class RepoAuthentication implements IAuthentication {
     }
 
     public function deleteUser($userId){
-        
+
         try{
             
             $result = User::where('id',$userId)
