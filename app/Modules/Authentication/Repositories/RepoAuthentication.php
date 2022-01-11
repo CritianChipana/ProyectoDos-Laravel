@@ -203,46 +203,46 @@ class RepoAuthentication implements IAuthentication {
 				],400);
         }
 
-        try{
+        // try{
 
             
-            $result = User::where('id',$userId)
-            ->update([
-                'firstName'=> $data->firstName,
-                'lastName'=> $data->lastName,
-                'email'=> $data->email,
-                'workSpace'=> $data->workSpace,
-                'mobileNo'=> $data->mobileNo,
-                'companyName'=> $data->companyName,
-                'indutryName'=> $data->indutryName,
-                'position'=> $data->position,
-                'isActive'=> $data->isActive,
-                'isAdmi'=> $data->isAdmi,
-                'isMasterAdmi'=> $data->isMasterAdmi,
-            ]);
+        //     $result = User::where('id',$userId)
+        //     ->update([
+        //         'firstName'=> $data->firstName,
+        //         'lastName'=> $data->lastName,
+        //         'email'=> $data->email,
+        //         'workSpace'=> $data->workSpace,
+        //         'mobileNo'=> $data->mobileNo,
+        //         'companyName'=> $data->companyName,
+        //         'indutryName'=> $data->indutryName,
+        //         'position'=> $data->position,
+        //         'isActive'=> $data->isActive,
+        //         'isAdmi'=> $data->isAdmi,
+        //         'isMasterAdmi'=> $data->isMasterAdmi,
+        //     ]);
 
-            if( $result ){
-                return response()->json(
-                    [
-                        'success' => true, 
-                        'message' => "El usuario se elimino con exito"
-                    ],200);
-            }else{
-                return response()->json(
-                    [
-                        'success' => false, 
-                        'message' => "No se encontro usuario"
-                    ],200);
-            }
+        //     if( $result ){
+        //         return response()->json(
+        //             [
+        //                 'success' => true, 
+        //                 'message' => "El usuario se elimino con exito"
+        //             ],200);
+        //     }else{
+        //         return response()->json(
+        //             [
+        //                 'success' => false, 
+        //                 'message' => "No se encontro usuario"
+        //             ],200);
+        //     }
 
-        }catch(Exception $ex){
-            Log::error('Error API delete User', ['params' => $userId, 'stackTrace' => $ex]);
-			return response()->json(
-				[
-					'success' => false, 
-					'message' => 'No se encontro Usuario para eliminar'
-				],404);
-        }
+        // }catch(Exception $ex){
+        //     Log::error('Error API delete User', ['params' => $userId, 'stackTrace' => $ex]);
+		// 	return response()->json(
+		// 		[
+		// 			'success' => false, 
+		// 			'message' => 'No se encontro Usuario para eliminar'
+		// 		],404);
+        // }
 //? *******************************************
         try{
 
