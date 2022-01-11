@@ -5,7 +5,7 @@
     interface IAuthentication {
         
         public function authenticatedUser();
-        public function registerUser($data);
+        public function registerUser($data,$validator);
         public function login($data);
         public function refresh($data);
         public function deleteUser($id);

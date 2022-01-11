@@ -34,7 +34,27 @@ class AuthenticationController extends Controller{
 
     public function registerUser(Request $request)
     {
-        $result = $this->IAuthentication->registerUser($request);
+        $validator = Validator::make($request->all(), [
+            
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'password' => 'required|string|min:6',
+            'email' => 'required|string|email|max:100|unique:users',
+            'workSpace' => '',
+            'mobileNo' => '',
+            'companyName' => '',
+            'indutryName' => '',
+            'position' => '',
+            'isActive' => 'required|boolean',
+            'isAdmi' => 'required|boolean',
+            'isMasterAdmi' => 'required|boolean',
+            'state' => 'required|boolean',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(),400);
+        }
+
+        $result = $this->IAuthentication->registerUser($request, $validator);
         return $result;
       
     }
