@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->boolean('isActive');
             $table->boolean('isAdmi');
             $table->boolean('isMasterAdmi');
-            $table->boolean('state');
+            $table->boolean('state')->default(true);
             $table->timestamps();
         });
     }

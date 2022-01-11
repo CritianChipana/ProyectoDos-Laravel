@@ -9,7 +9,7 @@
         public function login($data);
         public function refresh($data);
         public function deleteUser($id);
-        public function updateUser($id,$data);
+        public function updateUser($data);
         public function users();
 
     }
