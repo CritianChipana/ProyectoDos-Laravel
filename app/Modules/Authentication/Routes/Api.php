@@ -11,8 +11,8 @@ Route::post("/register",[AuthenticationController::class, "registerUser"]);
 Route::post('/login', [AuthenticationController::class,"login"]);
 Route::get('/refresh', [AuthenticationController::class,"refresh"]);
 Route::get('/user',[AuthenticationController::class,"authenticatedUser"]);
-Route::delete('/deleteUser/{id}', [AuthenticationController::class,"deleteUser"]);
-Route::put('/updateUser/{id}', [AuthenticationController::class,"updateUser"]);
+Route::delete('/deleteUser', [AuthenticationController::class,"deleteUser"]);
+Route::put('/updateUser', [AuthenticationController::class,"updateUser"]);
 Route::get('/users',[AuthenticationController::class,"users"]);
 
 

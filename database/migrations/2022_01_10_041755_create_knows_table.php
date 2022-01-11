@@ -21,7 +21,7 @@ class CreateKnowsTable extends Migration
             $table->string("knowArchive",7);
             $table->unsignedBigInteger('userId')->nullable();
             $table->foreign('userId')->references('id')->on('users')->onDelete('set null');
-            $table->boolean("state");
+            $table->boolean("state")->default(true);
             $table->timestamps();
         });
     }
