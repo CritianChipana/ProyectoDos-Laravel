@@ -180,7 +180,7 @@ class RepoAuthentication implements IAuthentication {
         // }
 
         $validator = Validator::make($data->all(), [
-            'id' => 'required',
+            'userId' => 'required',
             'firstName' => 'required',
             'lastName' => 'required',
             'email' => 'required',
@@ -244,9 +244,10 @@ class RepoAuthentication implements IAuthentication {
 		// 		],404);
         // }
 //? *******************************************
-        try{
-
-            $result = User::find($data->id);
+try{
+    
+    $result = User::find($userId);
+   
 
             $result->firstName=$data->firstName;
             $result->lastName=$data->lastName;
