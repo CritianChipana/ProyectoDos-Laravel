@@ -48,31 +48,14 @@ class RepoAuthentication implements IAuthentication {
 		);
 	}
 
-    public function registerUser($data){
-        $validator = Validator::make($data->all(), [
-            
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'password' => 'string|min:6',
-            'email' => 'required|string|email|max:100|unique:users',
-            'workSpace' => '',
-            'mobileNo' => '',
-            'companyName' => '',
-            'indutryName' => '',
-            'position' => '',
-            'isActive' => 'required|boolean',
-            'isAdmi' => 'required|boolean',
-            'isMasterAdmi' => 'required|boolean',
-            'state' => 'required|boolean',
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(),400);
-        }
+    public function registerUser($data, $validator){
 
         $user = User::create(array_merge(
             $validator->validate(),
-            ['password' => bcrypt($data->password)]
+            ['password' => Hash::make($data->password)]
+            // ['password' => bcrypt($data->password)]
         ));
+        // $hash = Hash::make('secret');
         $report = new Report();
         $report->userId = $user->id;
         $report->state = true;
@@ -85,6 +68,8 @@ class RepoAuthentication implements IAuthentication {
     }
     
     public function login($data){
+
+        //todo: validar que el usuario tenga estado true
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
@@ -94,10 +79,20 @@ class RepoAuthentication implements IAuthentication {
             ], 401);
         }
 
+        $report = $this->model::table('reports')
+            ->where('userId',auth()->id())
+            ->first();
+        
         return response()->json([
             'success' => true, 
-            'data' => $this->respondWithToken($token)
+            'data' => [
+                'access_token' => $token,
+                'user'=>auth()->user(),
+                'report'=>$report
+            ]
         ]);
+
+        // return $this->respondWithToken($token);
     }
 
     protected function respondWithToken($token)
@@ -144,8 +139,8 @@ class RepoAuthentication implements IAuthentication {
         $validator = Validator::make($data->all(), [
             'firstName' => 'required',
             'lastName' => 'required',
-            'password' => 'required|string|min:6',
-            'email' => 'required|string|email|max:100|unique:users',
+            // 'password' => 'required|string|min:6',
+            'email' => 'required',
             'workSpace' => '',
             'mobileNo' => '',
             'companyName' => '',
@@ -164,11 +159,11 @@ class RepoAuthentication implements IAuthentication {
         //     $validator->validate(),
         //     ['password' => bcrypt($data->password)]
         // ));
-        // helper de laravel para password.
+
+
         $user = User::find($id);
         $user->firstName=$data->firstName;
         $user->lastName=$data->lastName;
-        $user->password=$data->password;
         $user->email=$data->email;
         $user->workSpace=$data->workSpace;
         $user->mobileNo=$data->mobileNo;
@@ -179,6 +174,12 @@ class RepoAuthentication implements IAuthentication {
         $user->isAdmi=$data->isAdmi;
         $user->isMasterAdmi=$data->isMasterAdmi;
         $user->state=$data->state;
+        // todo validar si el password del usuario es el mismo que el de la BD
+        if($data->password){
+            $user->password= Hash::make($data->password);
+
+        }
+
         $user->save();
 
         return response()->json([
