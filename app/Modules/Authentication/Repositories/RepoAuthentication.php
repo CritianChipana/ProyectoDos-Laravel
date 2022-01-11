@@ -150,7 +150,7 @@ class RepoAuthentication implements IAuthentication {
    
 
 
-    public function updateUser($data){
+    public function updateUser($userId,$data){
         $messages = [
             'firstName.required' => 'El nombre es obligatorio',
             'lastName.required' => 'El apellido es obligatorio',
@@ -158,10 +158,10 @@ class RepoAuthentication implements IAuthentication {
             'workSpace.required' => 'El workspace es obligatorio',
             'mobileNo.required' => 'El numero de celular es obligatorio',
             'indutryName.required' => 'El nombre de empresa es obligatorio',
-            'position.required' => 'El position de empresa es obligatorio',
-            'isActive.required' => 'El isActive de empresa es obligatorio',
-            'isAdmi.required' => 'El isAdmi de empresa es obligatorio',
-            'isMasterAdmi.required' => 'El isMasterAdmi de empresa es obligatorio',
+            'position.required' => 'La position del usuario es obligatorio',
+            'isActive.required' => 'El estatus del usuario es obligatorio',
+            'isAdmi.required' => 'El usuario necesita el campo administrador',
+            'isMasterAdmi.required' => 'El usuario necesita el campo master administrador',
            
         ];
         
@@ -183,7 +183,6 @@ class RepoAuthentication implements IAuthentication {
             'id' => 'required',
             'firstName' => 'required',
             'lastName' => 'required',
-            // 'password' => 'required|string|min:6',
             'email' => 'required',
             'workSpace' => '',
             'mobileNo' => '',
@@ -194,6 +193,7 @@ class RepoAuthentication implements IAuthentication {
             'isAdmi' => 'required|boolean',
             'isMasterAdmi' => 'required|boolean',
         ],$messages);
+
         if($validator->fails()){
 
 			return response()->json(
@@ -201,46 +201,112 @@ class RepoAuthentication implements IAuthentication {
 					'success' => false, 
 					'message' => $validator->errors()
 				],400);
-            // return response()->json($validator->errors()->toJson(),400);
         }
 
+        try{
 
-        $user = User::find($data->id);
-        $user->firstName=$data->firstName;
-        $user->lastName=$data->lastName;
-        $user->email=$data->email;
-        $user->workSpace=$data->workSpace;
-        $user->mobileNo=$data->mobileNo;
-        $user->companyName=$data->companyName;
-        $user->indutryName=$data->indutryName;
-        $user->position=$data->position;
-        $user->isActive=$data->isActive;
-        $user->isAdmi=$data->isAdmi;
-        $user->isMasterAdmi=$data->isMasterAdmi;
-
-        if($data->password){
-
-            $validator = Validator::make($data->all(), [
-                'password' => 'required|string|min:6',
+            
+            $result = User::where('id',$userId)
+            ->update([
+                'firstName'=> $data->firstName,
+                'lastName'=> $data->lastName,
+                'email'=> $data->email,
+                'workSpace'=> $data->workSpace,
+                'mobileNo'=> $data->mobileNo,
+                'companyName'=> $data->companyName,
+                'indutryName'=> $data->indutryName,
+                'position'=> $data->position,
+                'isActive'=> $data->isActive,
+                'isAdmi'=> $data->isAdmi,
+                'isMasterAdmi'=> $data->isMasterAdmi,
             ]);
 
-            if($validator->fails()){
+            if( $result ){
+                return response()->json(
+                    [
+                        'success' => true, 
+                        'message' => "El usuario se elimino con exito"
+                    ],200);
+            }else{
                 return response()->json(
                     [
                         'success' => false, 
-                        'message' => $validator->errors()
-                    ],400);
+                        'message' => "No se encontro usuario"
+                    ],200);
             }
-            $user->password= Hash::make($data->password);
 
+        }catch(Exception $ex){
+            Log::error('Error API delete User', ['params' => $userId, 'stackTrace' => $ex]);
+			return response()->json(
+				[
+					'success' => false, 
+					'message' => 'No se encontro Usuario para eliminar'
+				],404);
+        }
+//? *******************************************
+        try{
+
+            $result = User::find($data->id);
+
+            $result->firstName=$data->firstName;
+            $result->lastName=$data->lastName;
+            $result->email=$data->email;
+            $result->workSpace=$data->workSpace;
+            $result->mobileNo=$data->mobileNo;
+            $result->companyName=$data->companyName;
+            $result->indutryName=$data->indutryName;
+            $result->position=$data->position;
+            $result->isActive=$data->isActive;
+            $result->isAdmi=$data->isAdmi;
+            $result->isMasterAdmi=$data->isMasterAdmi;
+    
+            if($data->password){
+    
+                $validator = Validator::make($data->all(), [
+                    'password' => 'required|string|min:6',
+                ]);
+    
+                if($validator->fails()){
+                    return response()->json(
+                        [
+                            'success' => false, 
+                            'message' => $validator->errors()
+                        ],400);
+                }
+                $result->password= Hash::make($data->password);
+    
+            }
+    
+            $result->save();
+
+            if( $result ){
+                return response()->json(
+                    [
+                        'success' => true, 
+                        'message' => "El usuario se modificar con exito"
+                    ],200);
+            }else{
+                return response()->json(
+                    [
+                        'success' => false, 
+                        'message' => "No se encontro usuario"
+                    ],200);
+            }
+    
+            // return response()->json([
+            //     'success' => true,
+            //     'data' => $result
+            // ], 201);
+
+        }catch(Exception $ex){
+            Log::error('Error API update User', ['params' => $userId, 'stackTrace' => $ex]);
+			return response()->json(
+				[
+					'success' => false, 
+					'message' => 'No se encontro Usuario para modificar'
+				],404);
         }
 
-        $user->save();
-
-        return response()->json([
-            'success' => true,
-            'user' => $user
-        ], 201);
     }
 
 

@@ -70,7 +70,7 @@ class AuthenticationController extends Controller{
         return $result;
     }
     public function updateUser(Request $request){
-        $result = $this->IAuthentication->updateUser($request);
+        $result = $this->IAuthentication->updateUser($userId,$request);
         return $result;
     }
     public function users(){
