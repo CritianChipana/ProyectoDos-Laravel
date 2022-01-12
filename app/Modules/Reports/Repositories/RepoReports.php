@@ -25,10 +25,10 @@ class RepoReports implements IReports {
         return $results;
     }
 
-    public function getReportById($id){
+    public function getReportById($userId){
         $results = $this->model::table('reports')
             // ->select('id','nombre')
-            ->where('id',$id)
+            ->where('id',$userId)
             ->first();
         return $results;
     }

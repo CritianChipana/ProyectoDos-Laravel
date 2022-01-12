@@ -20,9 +20,9 @@ class ReportsController extends Controller{
         return $results;
     }
     
-    public function getReportById($id){
-
-        $results = $this->IReports->getReportById($id);
+    public function getReportById(Request $request){
+        $userId = $request->userId;
+        $results = $this->IReports->getReportById($userId);
         return $results;
 
     }
