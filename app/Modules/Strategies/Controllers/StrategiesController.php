@@ -23,13 +23,13 @@ class StrategiesController extends Controller{
         ]);
     }
     
-    public function getStrategieById($id){
 
-        $results = $this->IStrategies->getStrategieById($id);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+    public function getStrategieByUserId(Request $request){
+
+        $userId = $request->userId;
+
+        $results = $this->IStrategies->getStrategieByUserId($userId);
+        return $results;
     }
 
     public function crearStrategie(Request $request){

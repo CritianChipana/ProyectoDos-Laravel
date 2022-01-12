@@ -21,13 +21,18 @@ class RepoStrategies implements IStrategies {
         return $results;
     }
 
-    public function getStrategieById($id){
+    public function getStrategieByUserId($userId){
+
         $results = $this->model::table('strategies')
-            // ->select('id','nombre')
-            ->where('id',$id)
+            ->where('userId', $userId)
             ->where('state',true)
+            ->orderBy('id', 'desc')
             ->first();
-        return $results;
+
+        return [
+            "success"=>true,
+            "data" => $results,
+        ];
     }
 
     public function crearStrategie($data){
@@ -37,15 +42,37 @@ class RepoStrategies implements IStrategies {
         // $table->foreign('userId')->references('id')->on('users')->onDelete('set null');
         // $table->boolean("state");
 
-
+        /*
         $strategy = new Strategy();
         $url = Storage::put('/public', $data->file('file'));
         $strategy->strategy=Storage::url($url);
         $strategy->userId=$data->userId;
         $strategy->state=true;
-
         $strategy->save();
-        return $strategy;
+        */
+
+        $url = Storage::put('/public', $data->file('file'));
+        $path = Storage::url($url);
+
+        $id = Strategy::insertGetId([
+            "userId" => $data->userId,
+            "strategy" => $path,
+            "state" => true
+        ]);
+
+        if ($id > 0) {
+            $response = [
+                "success" => true,
+                "message" => "Se guardó la Estratégia con éxito"
+            ];
+        } else {
+            $response = [
+                "success" => true,
+                "message" => "No se pude guardar la estatégia"
+            ];
+        }
+
+        return $response;
     }
 
     public function deleteStrategie($id){
