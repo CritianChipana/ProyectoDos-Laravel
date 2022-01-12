@@ -20,9 +20,12 @@ class StrategiesController extends Controller{
         return $results;
     }
     
-    public function getStrategieById($id){
 
-        $results = $this->IStrategies->getStrategieById($id);
+    public function getStrategieByUserId(Request $request){
+
+        $userId = $request->userId;
+
+        $results = $this->IStrategies->getStrategieByUserId($userId);
         return $results;
     }
 

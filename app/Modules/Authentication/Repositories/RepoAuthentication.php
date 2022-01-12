@@ -38,8 +38,18 @@ class RepoAuthentication implements IAuthentication {
         return response()->json(auth()->user());
     }
 
+    public function me ()
+	{
+		return response()->json(
+			[
+				'success' => true, 
+				'expires_in' => auth()->factory()->getTTL() * 60,
+				'data' => auth()->user()
+			], 200
+		);
+	}
+
     public function registerUser($data, $validator){
-      
 
         $user = User::create(array_merge(
             $validator->validate(),
@@ -58,25 +68,29 @@ class RepoAuthentication implements IAuthentication {
         ], 201);
     }
     
-    
     public function login($data){
 
         //todo: validar que el usuario tenga estado true
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 401);
         }
 
         $report = $this->model::table('reports')
-            // ->select('id','nombre')
-            ->where('id',auth()->id())
+            ->where('userId',auth()->id())
             ->first();
         
         return response()->json([
-            'access_token' => $token,
-            'user'=>auth()->user(),
-            'report'=>$report,
+            'success' => true, 
+            'data' => [
+                'access_token' => $token,
+                'user'=>auth()->user(),
+                'report'=>$report
+            ]
         ]);
 
         // return $this->respondWithToken($token);
@@ -115,7 +129,7 @@ class RepoAuthentication implements IAuthentication {
     }
 
     public function deleteUser($userId){
-        
+
         try{
             
             $result = User::where('id',$userId)
@@ -311,12 +325,15 @@ try{
 
     }
 
-
     public function users(){
         $results = $this->model::table('users')
         ->where('state',true)
         ->get();
-        return $results;
+    
+        return [
+            'success' => true,
+            'data' => $results
+        ];
     }
 
 }
