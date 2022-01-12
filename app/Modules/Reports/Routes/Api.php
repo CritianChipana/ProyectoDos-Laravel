@@ -11,6 +11,6 @@ Route::get("/report/buscarReport/{id}",[ReportsController::class, "getReportById
 Route::post("/report/register",[ReportsController::class, "register"]);
 Route::post("report/create",[ReportsController::class, "crearReport"]);
 Route::delete("report/delete/{id}",[ReportsController::class, "deleteReport"]);
-Route::put("/report/update/{id}",[ReportsController::class, "updateReport"]);
+Route::put("/report/update",[ReportsController::class, "updateReport"]);
 
 ?>

@@ -17,42 +17,33 @@ class ReportsController extends Controller{
 
     public function getReports(){
         $results = $this->IReports->getReports();
-        return response()->json([
-            "success"=>true,
-            "data" => $results
-        ]);
+        return $results;
     }
     
     public function getReportById($id){
 
         $results = $this->IReports->getReportById($id);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
+
     }
 
     public function crearReport(Request $request){
         $results = $this->IReports->crearReport($request);
-        return response()->json([
-            "success"=>true,
-            "data" => $results, 
-        ]);
+        return $results;
+
     }
 
-    public function deleteReport($id){
+    public function deleteReport(Request $request){
+        $id=$request->userId;
         $results = $this->IReports->deleteReport($id);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
+
     }
-    public function updateReport($id,Request $request){
+    public function updateReport(Request $request){
+        $id = $request->userId;
         $results = $this->IReports->updateReport($id, $request);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
+
     }
 
 }
