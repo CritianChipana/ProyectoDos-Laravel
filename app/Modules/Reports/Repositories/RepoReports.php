@@ -26,15 +26,45 @@ class RepoReports implements IReports {
     }
 
     public function getReportById($userId){
-        $results = $this->model::table('reports')
-            // ->select('id','nombre')
-            ->where('id',$userId)
-            ->first();
+
+
+            try{
+            
+                $user = User::where('state', true)->find($userId);
+                $result = $user->reports->where('state', true)->first();
+        
+            if ($result) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'data' => $result
+                    ],
+                    200
+                );
+            } else {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "No se encontro know"
+                    ],
+                    200
+                );
+            }
+            
+
+        } catch (Exception $ex) {
+            Log::error('Error API get repostbyId', ['params' => $userId, 'stackTrace' => $ex]);
             return response()->json(
                 [
-                    'success' => true, 
-                    'data' => $results
-                ],200);
+                    'success' => false,
+                    'message' => 'No se encontro el report, hable con el admi'
+                ],
+                404
+            );
+            
+        }
+
+            
     }
 
     public function crearReport($data){
