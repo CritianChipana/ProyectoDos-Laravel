@@ -17,10 +17,7 @@ class StrategiesController extends Controller{
 
     public function getStrategies(){
         $results = $this->IStrategies->getStrategies();
-        return response()->json([
-            "success"=>true,
-            "data" => $results
-        ]);
+        return $results;
     }
     
 
@@ -34,25 +31,16 @@ class StrategiesController extends Controller{
 
     public function crearStrategie(Request $request){
         $results = $this->IStrategies->crearStrategie($request);
-        return response()->json([
-            "success"=>true,
-            "data" => $results, 
-        ]);
+        return $results;
     }
 
     public function deleteStrategie($id){
         $results = $this->IStrategies->deleteStrategie($id);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
     }
     public function updateStrategie($id,Request $request){
         $results = $this->IStrategies->updateStrategie($id, $request);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
     }
 
 }

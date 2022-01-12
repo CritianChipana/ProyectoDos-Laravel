@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Know extends Model
 {
+    // protected $primaryKey = 'userId';
     // use HasFactory;
     public function user(){
         return $this->belongsTo('App\Models\User');

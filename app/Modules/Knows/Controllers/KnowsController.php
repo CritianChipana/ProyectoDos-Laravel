@@ -20,9 +20,9 @@ class KnowsController extends Controller{
         return $results;
     }
     
-    public function getKnowById($id){
-
-        $results = $this->IKnows->getKnowById($id);
+    public function getKnowById(Request $request){
+        $userId=$request->userId;
+        $results = $this->IKnows->getKnowById($userId);
         return $results;
     }
 

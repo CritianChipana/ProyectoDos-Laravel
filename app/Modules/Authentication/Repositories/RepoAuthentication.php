@@ -56,8 +56,9 @@ class RepoAuthentication implements IAuthentication {
             ['password' => Hash::make($data->password)]
             // ['password' => bcrypt($data->password)]
         ));
+        //todo: validar si el usuario se creo exitosamente
         $report = new Report();
-        $report->userId = $user->id;
+        $report->user_id = $user->id;
         $report->state = true;
         $report->save();
 
