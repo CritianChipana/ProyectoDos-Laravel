@@ -19,8 +19,8 @@ class CreateKnowsTable extends Migration
             $table->string("knowArea",50);
             $table->string("typeOfFile",7);
             $table->string("knowArchive",80);
-            $table->unsignedBigInteger('user_Id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->unsignedBigInteger('userId')->nullable();
+            $table->foreign('userId')->references('id')->on('users')->onDelete('set null');
             $table->boolean("state")->default(true);
             $table->timestamps();
         });
