@@ -58,7 +58,8 @@ class RepoAuthentication implements IAuthentication {
         ));
         //todo: validar si el usuario se creo exitosamente
         $report = new Report();
-        $report->user_id = $user->id;
+        $report->userId = $user->id;
+        // $report->user_id = $user->id;
         $report->state = true;
         $report->save();
 
