@@ -42,8 +42,9 @@ class RepoKnows implements IKnows
 
         try{
             
-                $user = User::where('state', true)->find($id);
-                $result = $user->knows->where('state', true);
+                // $user = User::where('state', true)->find($id);
+                // $result = $user->knows->where('state', true);
+                $result =  Know::where('userId', $id)->get();
 
             if ($result) {
                 return response()->json(
