@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::get("/knows",[KnowsController::class, "getKnows"]);
 Route::get("/know/{id}",[KnowsController::class, "getKnowById"]);
 Route::post("/know/create",[KnowsController::class, "crearKnow"]);
-Route::delete("/know/delete/{id}",[KnowsController::class, "deleteKnow"]);
-Route::put("/know/update/{id}",[KnowsController::class, "updateKnow"]);
+Route::delete("/know/delete",[KnowsController::class, "deleteKnow"]);
+Route::post("/know/update",[KnowsController::class, "updateKnow"]);
 
 ?>
