@@ -17,42 +17,30 @@ class KnowsController extends Controller{
 
     public function getKnows(){
         $results = $this->IKnows->getKnows();
-        return response()->json([
-            "success"=>true,
-            "data" => $results
-        ]);
+        return $results;
     }
     
     public function getKnowById($id){
 
         $results = $this->IKnows->getKnowById($id);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
     }
 
     public function crearKnow(Request $request){
         $results = $this->IKnows->crearKnow($request);
-        return response()->json([
-            "success"=>true,
-            "data" => $results, 
-        ]);
+        return $results;
     }
 
-    public function deleteKnow($id){
+    public function deleteKnow(Request $request){
+        $id= $request->id;
         $results = $this->IKnows->deleteKnow($id);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
     }
-    public function updateKnow($id,Request $request){
+    public function updateKnow(Request $request){
+        $id= $request->id;
         $results = $this->IKnows->updateKnow($id, $request);
-        return response()->json([
-            "success"=>true,
-            "data" => $results,
-        ]);
+        return $results;
+   
     }
 
 }
