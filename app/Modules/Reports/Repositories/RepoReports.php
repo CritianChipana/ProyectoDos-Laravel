@@ -44,7 +44,7 @@ class RepoReports implements IReports {
         $report->marketing=$data->marketing;
         $report->rentals=$data->rentals;
         $report->services=$data->services;
-        $report->userId=$data->userId;
+        $report->user_id=$data->userId;
         $report->state=true;
         $report->save();
 
@@ -77,7 +77,7 @@ class RepoReports implements IReports {
         $report->marketing=$data->marketing;
         $report->rentals=$data->rentals;
         $report->services=$data->services;
-        $report->userId=$data->userId;
+        $report->user_id=$data->userId;
         $report->state=$data->state;
         $report->save();
         return $report;

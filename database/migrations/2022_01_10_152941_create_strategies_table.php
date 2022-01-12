@@ -17,8 +17,8 @@ class CreateStrategiesTable extends Migration
             $table->id();
             $table->string("strategy",80);
 
-            $table->unsignedBigInteger('userId')->nullable();
-            $table->foreign('userId')->references('id')->on('users')->onDelete('set null');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->boolean("state")->default(true);
             $table->timestamps();
         });

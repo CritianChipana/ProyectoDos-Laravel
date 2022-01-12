@@ -29,12 +29,22 @@ class RepoKnows implements IKnows
 
     public function getKnowById($id)
     {
+        if(!$id){
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "No se encontro userId"
+                ],
+                401
+            );
+        }
+
         try{
-            $result = $this->model::table('knows')
-            ->select('id','knowName','knowArea','typeOfFile','knowArchive','knowArchive','knowArchive','created_at','updated_at')
-            ->where('id', $id)
-            ->where('state', true)
-            ->first();
+            
+                $user = User::where('state', true)->find($id);
+                $result = $user->knows->where('state', true);
+
             if ($result) {
                 return response()->json(
                     [
@@ -126,7 +136,7 @@ class RepoKnows implements IKnows
             $result->typeOfFile = $data->typeOfFile;
             $url = Storage::put('/public/know', $data->file('knowArchive'));
             $result->knowArchive = Storage::url($url);
-            $result->userId = $data->userId;
+            $result->user_id = $data->userId;
             $result->save();
     
             if ($result) {
@@ -169,7 +179,7 @@ class RepoKnows implements IKnows
 
         try {
 
-            $result = Know::where('id', $id)
+            $result = Know::where('id', $id)->Where('state',true)
                 ->update([
                     'state' => false
                 ]);
@@ -248,7 +258,7 @@ class RepoKnows implements IKnows
 
         try {
 
-            $user = User::find($data->userId);
+            $user = User::where('state',true)->find($data->userId);
             if( !$user ){
                 
                 return response()->json(
@@ -258,13 +268,13 @@ class RepoKnows implements IKnows
                     ],400);
             }
 
-            $result = Know::find($id);
+            $result = Know::where('state',true)->find($id);
             $result->knowName = $data->knowName;
             $result->knowArea = $data->knowArea;
             $result->typeOfFile = $data->typeOfFile;
             $url = Storage::put('/public/know', $data->file('knowArchive'));
             $result->knowArchive = Storage::url($url);
-            $result->userId = $data->userId;
+            $result->user_id = $data->userId;
             $result->save();
 
             if ($result) {
