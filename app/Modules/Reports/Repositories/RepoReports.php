@@ -27,30 +27,13 @@ class RepoReports implements IReports {
 
     public function getReportById($userId){
 
-
-            try{
+        try{
+            $report =  Report::where('userId', $userId)->first();
             
-                $user = User::where('state', true)->find($userId);
-                $result = $user->reports->where('state', true)->first();
-        
-            if ($result) {
-                return response()->json(
-                    [
-                        'success' => true,
-                        'data' => $result
-                    ],
-                    200
-                );
-            } else {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => "No se encontro know"
-                    ],
-                    200
-                );
-            }
-            
+            return [
+                "success" => true,
+                "data" => $report
+            ];
 
         } catch (Exception $ex) {
             Log::error('Error API get repostbyId', ['params' => $userId, 'stackTrace' => $ex]);
@@ -175,7 +158,7 @@ class RepoReports implements IReports {
 
     }
 
-    public function updateReport($id,$data){
+    public function updateReport($id, $data){
 
         $messages = [
             'userId.required' => 'El usuario es obligatorio (id)',
@@ -199,7 +182,7 @@ class RepoReports implements IReports {
         }
 
         try {
-
+            /*
             $user = User::where('state',true)->find($data->userId);
             if( !$user ){
                 
@@ -208,9 +191,18 @@ class RepoReports implements IReports {
                         'success' => false, 
                         'message' => "No se encontro usuario con el userId"
                     ],400);
-            }
+            }*/
 
-            $result = Report::where('state',true)->find($id);
+            $result = Report::where('userId', $id)
+                ->update([
+                    'billing' => $data->billing
+                ]);
+            
+            /*
+            $result = Report::where('state',true)->where("userId", $id);
+
+           
+
             $result->billing=$data->billing;
             $result->presale=$data->presale;
             $result->rawMaterial=$data->rawMaterial;
@@ -223,15 +215,17 @@ class RepoReports implements IReports {
             $result->marketing=$data->marketing;
             $result->rentals=$data->rentals;
             $result->services=$data->services;
-            $result->user_id=$data->userId;
+            $result->userId=$data->userId;
             $result->state=$data->state;
             $result->save();
+            */
+
 
             if ($result) {
                 return response()->json(
                     [
                         'success' => true,
-                        'message' => "El conocimiento se modificar con exito"
+                        'message' => "El reporte se modificar con exito"
                     ],
                     200
                 );
@@ -239,7 +233,7 @@ class RepoReports implements IReports {
                 return response()->json(
                     [
                         'success' => false,
-                        'message' => "No se encontro conocimiento"
+                        'message' => "No se encontro el reporte"
                     ],
                     200
                 );
