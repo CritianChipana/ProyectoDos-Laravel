@@ -52,12 +52,9 @@ class RepoStrategies implements IStrategies {
         $strategy->save();
         */
 
-        $url = Storage::put('/public', $data->file('file'));
-        $path = Storage::url($url);
-
         $id = Strategy::insertGetId([
             "userId" => $data->userId,
-            "strategy" => $path,
+            "strategy" => $data->strategy,
             "state" => true
         ]);
 
