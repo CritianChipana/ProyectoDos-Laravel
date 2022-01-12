@@ -30,7 +30,11 @@ class RepoReports implements IReports {
             // ->select('id','nombre')
             ->where('id',$userId)
             ->first();
-        return $results;
+            return response()->json(
+                [
+                    'success' => true, 
+                    'data' => $results
+                ],200);
     }
 
     public function crearReport($data){
