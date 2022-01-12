@@ -195,7 +195,21 @@ class RepoReports implements IReports {
 
             $result = Report::where('userId', $id)
                 ->update([
-                    'billing' => $data->billing
+                    'summaryDashBoard' => $data->summaryDashBoard,
+                    'billing' => $data->billing,
+                    'billing'=> $data->billing,
+                    'presale'=> $data->presale,
+                    'rawMaterial'=> $data->rawMaterial,
+                    'humanResources'=> $data->humanResources,
+                    'oee'=> $data->oee,
+                    'firecCost'=> $data->firecCost,
+                    'adminWorkSheet'=> $data->adminWorkSheet,
+                    'maintenance'=> $data->maintenance,
+                    'ouBoundLogistics'=> $data->ouBoundLogistics,
+                    'marketing'=> $data->marketing,
+                    'rentals'=> $data->rentals,
+                    'services'=> $data->services,
+                    'userId'=> $data->userId,
                 ]);
             
             /*

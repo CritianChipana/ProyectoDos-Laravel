@@ -18,6 +18,7 @@ class CreateReportsTable extends Migration
             // $table->string("nombre");
             // $table->timestamps();
             $table->id();
+            $table->string("summaryDashBoard",80)->nullable();
             $table->string("billing",80)->nullable();
             $table->string("presale",80)->nullable();
             $table->string("rawMaterial",80)->nullable();
