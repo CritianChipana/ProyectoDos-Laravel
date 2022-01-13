@@ -297,7 +297,7 @@ class RepoReports implements IReports {
             );
         
         } catch (ConnectionException $ex) {
-            Log::error('Error API embed ', ['params' => 'https://api.powerbi.com/v1.0/myorg/groups/'.'9bef4d95-8eb5-4b8e-b7cc-157c0a944443'.'/reports/'.$data->reportId , 'stackTrace' => $ex]);
+            Log::error('Error API embed ', ['params' => 'https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId , 'stackTrace' => $ex]);
             return response()->json(
                 [
                     'success' => false,
@@ -349,14 +349,14 @@ class RepoReports implements IReports {
                 'Authorization' => 'Bearer '.$access_token,
                 'Content-Type' => 'application/json'
             // ])->post('https://api.powerbi.com/v1.0/myorg/groups/9bef4d95-8eb5-4b8e-b7cc-157c0a944443/reports/885234cf-ed53-4ac9-a2bc-2d621272e37d/GenerateToken', [
-            ])->post('https://api.powerbi.com/v1.0/myorg/groups/'.'9bef4d95-8eb5-4b8e-b7cc-157c0a944443'.'/reports/'.$data->reportId.'/GenerateToken', [
+            ])->post('https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId.'/GenerateToken', [
                 'accessLevel' => 'View',
             ]);
 
             return $result->json()['token'];
 
         } catch (\Throwable $ex) {
-            Log::error('Error API token_view ', ['params' => 'https://api.powerbi.com/v1.0/myorg/groups/'.'9bef4d95-8eb5-4b8e-b7cc-157c0a944443'.'/reports/'.$data->reportId.'/GenerateToken' , 'stackTrace' => $ex]);
+            Log::error('Error API token_view ', ['params' => 'https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId.'/GenerateToken' , 'stackTrace' => $ex]);
             return response()->json(
                 [
                     'success' => false,
