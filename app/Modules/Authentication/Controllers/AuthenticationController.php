@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Auth;
 
 class AuthenticationController extends Controller{
     
@@ -27,13 +28,20 @@ class AuthenticationController extends Controller{
     }
 
     public function me ()
-	{
+	{   
 		return response()->json(
 			[
 				'success' => true
 			], 200
 		);
-	}
+	} 
+
+    public function userById (Request $request) 
+    {   
+        $user_id = $request->user_id;
+        $result = $this->IAuthentication->userById($user_id);
+        return $result;
+    }
 
     public function authenticatedUser()
     {

@@ -12,6 +12,7 @@ Route::get("/me",[AuthenticationController::class, "me"]);
 Route::post('/login', [AuthenticationController::class,"login"]);
 Route::get('/refresh', [AuthenticationController::class,"refresh"]);
 Route::get('/user',[AuthenticationController::class,"authenticatedUser"]);
+Route::post('/userById',[AuthenticationController::class,"userById"]);
 Route::delete('/deleteUser', [AuthenticationController::class,"deleteUser"]);
 Route::put('/updateUser', [AuthenticationController::class,"updateUser"]);
 Route::get('/users',[AuthenticationController::class,"users"]);

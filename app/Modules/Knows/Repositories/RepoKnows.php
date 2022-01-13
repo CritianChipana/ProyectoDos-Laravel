@@ -117,7 +117,7 @@ class RepoKnows implements IKnows
                 400
             );
         }
-        
+
         try{
 
             $user = User::find($data->userId);
@@ -130,7 +130,7 @@ class RepoKnows implements IKnows
                         'message' => "No se encontro usuario con el userId"
                     ],400);
             }
-                
+            
             $result = new Know();
             $result->knowName = $data->knowName;
             $result->knowArea = $data->knowArea;
@@ -138,7 +138,9 @@ class RepoKnows implements IKnows
             $url = Storage::put('/public/know', $data->file('knowArchive'));
             $result->knowArchive = Storage::url($url);
             $result->userId = $data->userId;
+            $result->state = true;
             $result->save();
+
     
             if ($result) {
                 return response()->json(
@@ -164,7 +166,8 @@ class RepoKnows implements IKnows
             return response()->json(
                 [
                     'success' => false,
-                    'message' => 'No se creo el conocimiento, hable con el admi'
+                    'message' => 'No se creo el conocimiento, hable con el admi',
+                    'exception' => $ex
                 ],
                 404
             );
