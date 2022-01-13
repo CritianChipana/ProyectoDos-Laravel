@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+use Carbon\Carbon;
+
 class RepoKnows implements IKnows
 {
 
@@ -45,12 +47,20 @@ class RepoKnows implements IKnows
                 // $user = User::where('state', true)->find($id);
                 // $result = $user->knows->where('state', true);
                 $result =  Know::where('userId', $id)->get();
+                // $a = $result->updated_at->diffForHumans();
+                // $result->updated_at = $a;
+                // $message=$result['updated_at'];
+
+                foreach($result as $know){
+                    $know->updated_at->diffForHumans();
+                }
 
             if ($result) {
                 return response()->json(
                     [
                         'success' => true,
-                        'data' => $result
+                        'data' => $result,
+                        // 'menase' => 'asas'->diffForHumans(),
                     ],
                     200
                 );

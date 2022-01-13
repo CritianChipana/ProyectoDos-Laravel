@@ -270,12 +270,81 @@ class RepoReports implements IReports {
     
     public function embed($data){
 
-        $access_token = $this->access_token();
-        $token = $this->token_view($data);
+        
+
+        $messages = [
+            'reportId.required' => 'El id del reporte es obligatorio',
+        ];
+
+        $validator = Validator::make($data->all(), [
+            'reportId' => 'required',
+
+        ], $messages);
+        
+        if ($validator->fails()) {
+            
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()
+                ],
+                400
+            );
+        }
 
 
         try {
+            //? ACCES TOKEN **************
+            $result = Http::asForm()->post('https://login.microsoftonline.com/65e8aa94-e441-49b1-9502-08318650e0c4/oauth2/token', [
+                'grant_type' => 'client_credentials',
+                'client_secret' => 'dlH7Q~d.YV7IROcRSotaJ3Up7A2XQB_likREb',
+                'client_id' => 'd3b91711-815b-42a9-a6a9-b15033b97a89',
+                'resource' => 'https://analysis.windows.net/powerbi/api',
+            ]);
+    
+            $access_token = $result->json()['access_token'];
+        
+        } catch (\Throwable $ex) {
+            Log::error('Error API acces_token ', ['params' => 'https://login.microsoftonline.com/65e8aa94-e441-49b1-9502-08318650e0c4/oauth2/token' , 'stackTrace' => $ex]);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'No se pudo generar el access token, hable con el admi',
+                    'Error'=>$ex
+                ],
+                500
+            );
+        }
 
+        try {
+            //? VIEW TOKEN **************
+            $result = Http::withHeaders([
+                'Authorization' => 'Bearer '.$access_token,
+                'Content-Type' => 'application/json'
+            ])->post('https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId.'/GenerateToken', [
+                'accessLevel' => 'View',
+            ]);
+
+            $token = $result->json()['token'];
+
+        } catch (\Throwable $ex) {
+            Log::error('Error API token_view ', ['params' => 'https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId.'/GenerateToken' , 'stackTrace' => $ex]);
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'verifique el id del reporte o el workspace son validos',
+                    'error'=>$ex
+                ],
+                500
+            );
+        }
+
+        try {
+
+        // $access_token = $this->access_token();
+        // $token = $this->token_view($data, $access_token);
+
+            //? EMBED **************
             $result = Http::withHeaders([
                 'Authorization' => 'Bearer '.$access_token,
                 'Content-Type' => 'application/json'
@@ -283,6 +352,7 @@ class RepoReports implements IReports {
     
                 'language' => 'json',
                 ]);
+            
             $embedUrl = $result->json()['embedUrl'];
             $id = $result->json()['id'];
     
@@ -296,20 +366,17 @@ class RepoReports implements IReports {
                 200
             );
         
-        } catch (ConnectionException $ex) {
+        } catch (\Throwable $ex) {
             Log::error('Error API embed ', ['params' => 'https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId , 'stackTrace' => $ex]);
             return response()->json(
                 [
                     'success' => false,
-                    'message' => 'error embed, hable con el admi',
+                    'message' => 'verifique el id del reporte o el workspace son validos',
                     'error'=>$ex
                 ],
                 500
             );
         }
-
-      
-
     }
 
     protected function access_token(){
@@ -322,33 +389,30 @@ class RepoReports implements IReports {
                 'client_id' => 'd3b91711-815b-42a9-a6a9-b15033b97a89',
                 'resource' => 'https://analysis.windows.net/powerbi/api',
             ]);
+            $mensaje = $result->json()['access_token'];
     
-            return $result->json()['access_token'];
+            return $mensaje;
         
-        } catch (ConnectionException $ex) {
+        } catch (\Throwable $ex) {
             Log::error('Error API acces_token ', ['params' => 'https://login.microsoftonline.com/65e8aa94-e441-49b1-9502-08318650e0c4/oauth2/token' , 'stackTrace' => $ex]);
             return response()->json(
                 [
                     'success' => false,
                     'message' => 'No se pudo generar el access token, hable con el admi',
-                    'error'=>$ex
+                    'Error'=>$ex
                 ],
                 500
             );
         }
-
     }
 
-    protected function token_view($data){
+    protected function token_view($data,$access_token){
 
         try {
-            $access_token = $this->access_token();
 
             $result = Http::withHeaders([
-                // 'Authorization' => 'Bearer '.'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCIsImtpZCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNjVlOGFhOTQtZTQ0MS00OWIxLTk1MDItMDgzMTg2NTBlMGM0LyIsImlhdCI6MTY0MjA0MDAwNSwibmJmIjoxNjQyMDQwMDA1LCJleHAiOjE2NDIwNDM5MDUsImFpbyI6IkUyWmdZRERid1hWanp3WkRreDNuWXJoV3JzaDBCQUE9IiwiYXBwaWQiOiJkM2I5MTcxMS04MTViLTQyYTktYTZhOS1iMTUwMzNiOTdhODkiLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC82NWU4YWE5NC1lNDQxLTQ5YjEtOTUwMi0wODMxODY1MGUwYzQvIiwib2lkIjoiMmI2ZjU1ZDktZDNjZi00MDkzLThiNzMtODUxNTczNGE5NjE4IiwicmgiOiIwLkFYY0FsS3JvWlVIa3NVbVZBZ2d4aGxEZ3hCRVh1ZE5iZ2FsQ3BxbXhVRE81ZW9sM0FBQS4iLCJzdWIiOiIyYjZmNTVkOS1kM2NmLTQwOTMtOGI3My04NTE1NzM0YTk2MTgiLCJ0aWQiOiI2NWU4YWE5NC1lNDQxLTQ5YjEtOTUwMi0wODMxODY1MGUwYzQiLCJ1dGkiOiJGa2d6WnpIQ1ZVQ2Y3aGNsc29SUEFRIiwidmVyIjoiMS4wIn0.htA9lbBoOtHGA5DXuW1dlEcGMd4dk6PzK1VYrPxdDw4feGecmRMqeK3V2fHOxs4W2P2P22YldgNoYLzB6IppJ4S2Ne4KN9Pyig7HVFwWL3hm9ZddOPmtuky25ctIDgAChMJdeMUaIDs34acX367AUfczry6AMvAWKTGSdVzX-bluFcrTxP_QoRSWZ70NYfVQMRW1vHADQBt4i_uAIlqWxtwL7lsUqPH0Kjscd-6woFbjfwuMonTd7hI5RMUpC2_t92lPX0tyNzX2jUBg7CpTTV-cHClFBkDTsLtKYEhA56RSsNL87WPCu1h6EFtkOcwaDl3YcZV0E0RRUpRw9ygW2w',
                 'Authorization' => 'Bearer '.$access_token,
                 'Content-Type' => 'application/json'
-            // ])->post('https://api.powerbi.com/v1.0/myorg/groups/9bef4d95-8eb5-4b8e-b7cc-157c0a944443/reports/885234cf-ed53-4ac9-a2bc-2d621272e37d/GenerateToken', [
             ])->post('https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId.'/GenerateToken', [
                 'accessLevel' => 'View',
             ]);
