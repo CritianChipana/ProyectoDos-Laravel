@@ -35,7 +35,10 @@ class RepoAuthentication implements IAuthentication {
         //           return response()->json(['token_absent'], $e->getStatusCode());
         //   }
         //   return response()->json(compact('user'));
-        return response()->json(auth()->user());
+        return [
+            "success" => true,
+            "data" => response()->json(auth()->user())
+        ];
     }
 
     public function me ()
@@ -48,6 +51,15 @@ class RepoAuthentication implements IAuthentication {
 			], 200
 		);
 	}
+
+    public function userById ($user_id) {
+        $result = User::where('id', $user_id)->first();
+
+        return [
+            "success" => true,
+            "data" => $result
+        ];
+    }
 
     public function registerUser($data, $validator){
 

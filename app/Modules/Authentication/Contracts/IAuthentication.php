@@ -4,6 +4,7 @@
 
     interface IAuthentication {
         
+        public function userById($user_id);
         public function authenticatedUser();
         public function registerUser($data,$validator);
         public function login($data);

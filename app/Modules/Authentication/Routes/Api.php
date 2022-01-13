@@ -19,6 +19,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::delete('/deleteUser', [AuthenticationController::class,"deleteUser"]);
     Route::put('/updateUser', [AuthenticationController::class,"updateUser"]);
     Route::get('/users',[AuthenticationController::class,"users"]);
+    Route::post('/userById',[AuthenticationController::class,"userById"]);
 });
 
 // Route::group(['middleware' => ['web-api','CheckStatusUser']], function () {
