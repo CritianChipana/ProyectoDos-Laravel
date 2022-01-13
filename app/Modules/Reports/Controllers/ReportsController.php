@@ -45,7 +45,11 @@ class ReportsController extends Controller{
         return $results;
 
     }
+    public function embed(Request $request){
+        $results = $this->IReports->embed($request);
+        return $results;
 
+    }
 }
 
 

@@ -9,6 +9,7 @@
         public function getReportById($id);
         public function deleteReport($id);
         public function updateReport($id,$data);
+        public function embed($data);
 
     }
 

@@ -12,5 +12,6 @@ Route::post("/report/register",[ReportsController::class, "register"]);
 Route::post("report/create",[ReportsController::class, "crearReport"]);
 Route::delete("report/delete/{id}",[ReportsController::class, "deleteReport"]);
 Route::put("/report/update",[ReportsController::class, "updateReport"]);
+Route::post("report/embed",[ReportsController::class, "embed"]);
 
 ?>
