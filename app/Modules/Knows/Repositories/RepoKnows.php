@@ -137,7 +137,7 @@ class RepoKnows implements IKnows
             $result->typeOfFile = $data->typeOfFile;
             $url = Storage::put('/public/know', $data->file('knowArchive'));
             $result->knowArchive = Storage::url($url);
-            $result->user_id = $data->userId;
+            $result->userId = $data->userId;
             $result->save();
     
             if ($result) {
