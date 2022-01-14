@@ -44,23 +44,18 @@ class RepoKnows implements IKnows
 
         try{
             
-                // $user = User::where('state', true)->find($id);
-                // $result = $user->knows->where('state', true);
                 $result =  Know::where('userId', $id)->get();
-                // $a = $result->updated_at->diffForHumans();
-                // $result->updated_at = $a;
-                // $message=$result['updated_at'];
 
                 foreach($result as $know){
-                    $know->updated_at->diffForHumans();
+                    $know->fecha_modificada = $know->updated_at->diffForHumans();
                 }
-
+                
+                
             if ($result) {
                 return response()->json(
                     [
                         'success' => true,
                         'data' => $result,
-                        // 'menase' => 'asas'->diffForHumans(),
                     ],
                     200
                 );
@@ -68,7 +63,8 @@ class RepoKnows implements IKnows
                 return response()->json(
                     [
                         'success' => false,
-                        'message' => "No se encontro know"
+                        'message' => "No se encontro know",
+
                     ],
                     200
                 );
@@ -80,9 +76,10 @@ class RepoKnows implements IKnows
             return response()->json(
                 [
                     'success' => false,
-                    'message' => 'No se creo el conocimiento, hable con el admi'
+                    'message' => 'No se encontro el conocimiento, hable con el admi',
+                    'error'=>$ex,
                 ],
-                404
+                500
             );
             
         }
