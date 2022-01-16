@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('workSpace',50)->nullable();
             $table->string('mobileNo',50)->nullable();
             $table->string('companyName',100)->nullable();
-            $table->string('ruc',10)->nullable();
+            $table->string('ruc',11)->nullable();
             $table->string('indutryName',100)->nullable();
             $table->string('position',100)->nullable();
             $table->boolean('isActive');
