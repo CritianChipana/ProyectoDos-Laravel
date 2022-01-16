@@ -29,15 +29,15 @@ class CorsMiddleware
         if ($request->isMethod('OPTIONS'))
         {
             
-            Log::info('Headers.', ['headers' => $headers]);
+            Log::info('Headers dentro de IF.', ['headers' => $headers]);
             return response()->json('{"method":"OPTIONS"}', 200, $headers);
         }
 
         
         $response = $next($request);
 
-        Log::info('Headers.', ['headers' => $headers]);
-        
+        Log::info('Headers DESPUES DE RESPONSE.', ['headers' => $headers]);
+
         foreach($headers as $key => $value)
         {
             $response->header($key, $value);
