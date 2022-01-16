@@ -295,10 +295,10 @@ class RepoReports implements IReports {
 
         try {
             //? ACCES TOKEN **************
-            $result = Http::asForm()->post('https://login.microsoftonline.com/65e8aa94-e441-49b1-9502-08318650e0c4/oauth2/token', [
+            $result = Http::asForm()->post('https://login.microsoftonline.com/08e7848a-cc64-4706-80c2-fe6cdc2a214c/oauth2/token', [
                 'grant_type' => 'client_credentials',
-                'client_secret' => 'dlH7Q~d.YV7IROcRSotaJ3Up7A2XQB_likREb',
-                'client_id' => 'd3b91711-815b-42a9-a6a9-b15033b97a89',
+                'client_secret' => 'f2T7Q~RpJUGnHpDh7rjRok8h-31KPBFt2Zp6T',
+                'client_id' => '42d56082-8dbe-445e-90ec-1a1a4cfb345b',
                 'resource' => 'https://analysis.windows.net/powerbi/api',
             ]);
     
@@ -318,10 +318,12 @@ class RepoReports implements IReports {
 
         try {
             //? VIEW TOKEN **************
+            $workSpace = auth()->user()->workSpace;
+
             $result = Http::withHeaders([
                 'Authorization' => 'Bearer '.$access_token,
                 'Content-Type' => 'application/json'
-            ])->post('https://api.powerbi.com/v1.0/myorg/groups/'.auth()->user()->workSpace.'/reports/'.$data->reportId.'/GenerateToken', [
+            ])->post("https://api.powerbi.com/v1.0/myorg/groups/$workSpace/reports/$data->reportId/GenerateToken", [
                 'accessLevel' => 'View',
             ]);
 
