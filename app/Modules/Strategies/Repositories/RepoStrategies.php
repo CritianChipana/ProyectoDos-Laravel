@@ -31,21 +31,23 @@ class RepoStrategies implements IStrategies {
             ->orderBy('id', 'desc')
             ->first();
 
-            if ($results) {
-               return response()->json(
+        $results->strategy = ENV('DOMAIN') . $results->strategy;
+
+        if ($results) {
+            return response()->json(
+            [
+                'success' => true,
+                'message' => $results
+            ],
+            200);
+        } else {
+            return response()->json(
                 [
-                    'success' => true,
-                    'message' => $results
+                    'success' => false,
+                    'message' => "no se encontro estrategias del usuario"
                 ],
                 200);
-            } else {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => "no se encontro estrategias del usuario"
-                    ],
-                    200);
-            }
+        }
 
     }
 
