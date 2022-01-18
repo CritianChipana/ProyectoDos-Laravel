@@ -35,7 +35,7 @@ class RepoStrategies implements IStrategies {
                return response()->json(
                 [
                     'success' => true,
-                    'message' => $results
+                    'data' => $results
                 ],
                 200);
             } else {
@@ -44,7 +44,7 @@ class RepoStrategies implements IStrategies {
                         'success' => false,
                         'message' => "no se encontro estrategias del usuario"
                     ],
-                    200);
+                    404);
             }
 
     }
