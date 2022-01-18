@@ -89,8 +89,8 @@ class RepoAuthentication implements IAuthentication {
         if (! $token = auth()->attempt($credentials)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized'
-            ], 401);
+                'message' => 'Por favor, verifique su email o contraseña'
+            ], 201);
         }
 
         $report = $this->model::table('reports')

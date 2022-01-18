@@ -21,11 +21,11 @@ class StrategiesController extends Controller{
     }
     
 
-    public function getStrategieByUserId(Request $request){
+    public function getStrategieByUserId(){
 
-        $userId = $request->userId;
+        $id = auth()->user()->id;
 
-        $results = $this->IStrategies->getStrategieByUserId($userId);
+        $results = $this->IStrategies->getStrategieByUserId($id);
         return $results;
     }
 

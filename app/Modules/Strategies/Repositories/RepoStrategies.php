@@ -5,6 +5,7 @@ namespace App\Modules\Strategies\Repositories;
 use App\Models\Know;
 use App\Models\Strategy;
 use App\Modules\Strategies\Contracts\IStrategies;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,50 +23,79 @@ class RepoStrategies implements IStrategies {
         return $results;
     }
 
-    public function getStrategieByUserId($userId){
-
+    public function getStrategieByUserId($id){
+        $id = auth()->user()->id;
         $results = $this->model::table('strategies')
-            ->where('userId', $userId)
+            ->where('userId', $id)
             ->where('state',true)
             ->orderBy('id', 'desc')
             ->first();
 
-        return [
-            "success"=>true,
-            "data" => $results,
-        ];
+            if ($results) {
+               return response()->json(
+                [
+                    'success' => true,
+                    'message' => $results
+                ],
+                200);
+            } else {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "no se encontro estrategias del usuario"
+                    ],
+                    200);
+            }
+
     }
 
     public function crearStrategie($data){
-        // $table->string("strategy",80);
 
-        // $table->unsignedBigInteger('userId')->nullable();
-        // $table->foreign('userId')->references('id')->on('users')->onDelete('set null');
-        // $table->boolean("state");
+        $messages = [
+            'file.required' => 'La estrategia es obligatorio',
+            'userId.required' => 'El userId es obligatorio',
+        ];
 
-        /*
+        $validator = Validator::make($data->all(), [
+
+            'file' => 'required',
+            'userId' => 'required',
+
+        ], $messages);
+        
+        if ($validator->fails()) {
+            
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $validator->errors()
+                ],
+                400
+            );
+        }
+
         $strategy = new Strategy();
-        $url = Storage::put('/public', $data->file('file'));
+        $url = Storage::put('/public/strategy', $data->file('file'));
         $strategy->strategy=Storage::url($url);
-        $strategy->user_id=$data->userId;
+        $strategy->userId=$data->userId;
         $strategy->state=true;
         $strategy->save();
-        */
+       
 
-        $id = Strategy::insertGetId([
-            "userId" => $data->userId,
-            "strategy" => $data->strategy,
-            "state" => true
-        ]);
+        // $id = Strategy::insertGetId([
+        //     "userId" => $data->userId,
+        //     "strategy" => $data->strategy,
+        //     "state" => true
+        // ]);
 
-        if ($id > 0) {
+        if ($strategy) {
             $response = [
                 "success" => true,
                 "message" => "Se guardó la Estratégia con éxito"
             ];
         } else {
             $response = [
-                "success" => true,
+                "success" => false,
                 "message" => "No se pude guardar la estatégia"
             ];
         }
